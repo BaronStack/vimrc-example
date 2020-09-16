@@ -41,26 +41,42 @@ set laststatus=2
 set autochdir
 au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 
+" undo file when close file
+set nobackup
+if has('persistent_undo')
+  set undofile
+  set undodir=~/.vim/undodir
+  if !isdirectory(&undodir)
+    call mkdir(&undodir, 'p', 0700)
+  endif
+endif
+
 noremap = nzz
 noremap - Nzz
 noremap <LEADER><CR> :nohlsearch<CR>
 
-noremap n h
-noremap u k
-noremap e j
-noremap i l
-noremap U 5k
-noremap E 5j
-noremap N 7h
-noremap I 7l
-" N key: go to the start of the line
-noremap <C-n> 0
-" I key: go to the end of the line
-noremap <C-i> $
 
-noremap k i
-noremap K I
-noremap l u
+noremap J 5j
+noremap K 5k
+noremap H 5h
+noremap L 5l
+
+" noremap n h
+" noremap u k
+" noremap e j
+" noremap i l
+" noremap U 5k
+" noremap E 5j
+" noremap N 7h
+" noremap I 7l
+" " N key: go to the start of the line
+" noremap <C-n> 0
+" " I key: go to the end of the line
+" noremap <C-i> $
+" 
+" noremap k i
+" noremap K I
+" noremap l u
 
 map s <nop>
 map S :w<CR>

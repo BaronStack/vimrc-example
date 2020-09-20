@@ -42,6 +42,13 @@ set laststatus=2
 set autochdir
 au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 
+" taglist
+let Tlist_Ctags_Cmd="/usr/local/bin/ctags"
+let Tlist_Show_One_File=1
+let Tlist_Exit_OnlyWindow=1
+let Tlist_Use_Right_Window=1
+set tags+=~/.vim/systags
+
 " undo file when close file
 set nobackup
 if has('persistent_undo')
@@ -152,8 +159,9 @@ Plug 'mattn/emmet-vim'
 Plug 'vim-scripts/indentpython.vim'
 
 " Markdown
-Plug 'iamcco/markdown-preview.vim', { 'do': { -> mkdp#util#install_sync() }, 'for' :['markdown', 'vim-plug'] }
-Plug 'dhruvasagar/vim-table-mode', { 'on': 'TableModeToggle' }
+Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug'] }
+Plug 'dhruvasagar/vim-table-mode', { 'on': 'TableModeToggle', 'for': ['text', 'markdown', 'vim-plug'] }
+Plug 'mzlogin/vim-markdown-toc', { 'for': ['gitignore', 'markdown', 'vim-plug'] }
 Plug 'vimwiki/vimwiki'
 
 " Bookmarks
@@ -174,6 +182,7 @@ Plug 'fadein/vim-FIGlet'
 
 " coc vim
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'wellle/tmux-complete.vim'
 
 
 call plug#end()
@@ -186,7 +195,17 @@ color snazzy
 " ===
 let g:coc_global_extensions = [
   \ 'coc-json',
-  \ 'coc-vimlsp']
+  \ 'coc-vimlsp',
+  \ 'coc-java',
+  \ 'coc-python',
+  \ 'coc-translator',
+  \ 'coc-sourcekit',
+  \ 'coc-diagnostic',
+  \ 'coc-actions',
+  \ 'coc-pyright',
+  \ 'coc-syntax',
+  \ 'coc-snippets',
+  \ 'coc-explorer']
 
 set hidden
 set updatetime=100
@@ -213,6 +232,8 @@ nmap <silent> gd <Plug>(coc-definition)
 nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
+" coc-translator
+nmap ts <Plug>(coc-translator-p)
 
 " Use K to show documentation in preview window.
 nnoremap <silent> <LEADER>h :call <SID>show_documentation()<CR>
@@ -292,32 +313,29 @@ let b:ale_fixers = ['autopep8', 'yapf']
 map <silent> T :TagbarOpenAutoClose<CR>
 
 
-" ===
-" === MarkdownPreview
-" ===
-" let g:mkdp_auto_start = 0
-" let g:mkdp_auto_close = 1
-" let g:mkdp_refresh_slow = 0
-" let g:mkdp_command_for_global = 0
-" let g:mkdp_open_to_the_world = 0
-" let g:mkdp_open_ip = ''
-" let g:mkdp_browser = 'chromium'
-" let g:mkdp_echo_preview_url = 0
-" let g:mkdp_browserfunc = ''
-" let g:mkdp_preview_options = {
-"     \ 'mkit': {},
-"     \ 'katex': {},
-"     \ 'uml': {},
-"     \ 'maid': {},
-"     \ 'disable_sync_scroll': 0,
-"     \ 'sync_scroll_type': 'middle',
-"     \ 'hide_yaml_meta': 1
-"     \ }
-" let g:mkdp_markdown_css = ''
-" let g:mkdp_highlight_css = ''
-" let g:mkdp_port = ''
-" let g:mkdp_page_title = '「${name}」'
-
+" ==let g:mkdp_auto_start = 0
+let g:mkdp_auto_close = 1
+let g:mkdp_refresh_slow = 0
+let g:mkdp_command_for_global = 0
+let g:mkdp_open_to_the_world = 0
+let g:mkdp_open_ip = ''
+let g:mkdp_echo_preview_url = 0
+let g:mkdp_browserfunc = ''
+let g:mkdp_preview_options = {
+    \ 'mkit': {},
+    \ 'katex': {},
+    \ 'uml': {},
+    \ 'maid': {},
+    \ 'disable_sync_scroll': 0,
+    \ 'sync_scroll_type': 'middle',
+    \ 'hide_yaml_meta': 1
+    \ }
+let g:mkdp_markdown_css = ''
+let g:mkdp_highlight_css = ''
+let g:mkdp_port = ''
+let g:mkdp_page_title = '「${name}」'
+nmap <c-p> <Plug>MarkdownPreview 
+nmap <c-s> <Plug>MarkdownPreviewStop
 
 " ===
 " === vim-table-mode
